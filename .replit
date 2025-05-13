@@ -1,0 +1,28 @@
+modules = ["kotlin", "java"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["jdk", "gradle"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Android Build"
+
+[[workflows.workflow]]
+name = "Android Build"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "export JAVA_HOME=/nix/store/2vwkssqpzykk37r996cafq7x63imf4sp-openjdk-21+35 && ./gradlew :app:assembleDebug"
+
+[deployment]
+run = ["sh", "-c", "export JAVA_HOME=/nix/store/2vwkssqpzykk37r996cafq7x63imf4sp-openjdk-21+35 && ./gradlew :app:assembleDebug"]
